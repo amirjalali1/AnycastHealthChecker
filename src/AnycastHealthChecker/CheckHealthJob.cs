@@ -22,8 +22,18 @@ namespace AnycastHealthChecker
         public Task Execute(IJobExecutionContext context)
         {
             _logger.LogCritical("Hello world!");
+
             _processorHealthCheck.CheckHealth();
               _nginxHelathCheck.IsHealthy().ConfigureAwait(true);
+            //ram
+            //network 10g
+            //nginx is available
+
+            //0-100
+            //if(score >80)
+            //service disbale
+            //if(score <80)
+
 
             return Task.CompletedTask;
         }

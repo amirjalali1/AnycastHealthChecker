@@ -37,9 +37,9 @@ namespace AnycastHealthChecker
             {
                 _memoryCache.Set("countiing", ++counter);
             }
-         
+         //TODO: nginx timeout is exception?
             watch.Start();
-            var response = await _httpClient.GetAsync("http://localhost:8020/nginx-health");
+            var response = await _httpClient.GetAsync("http://localhost:8020/nginx-health"); //todo: if getasync timeout what happened?
             var contentResult = await response.Content.ReadAsStringAsync();
             watch.Stop();
             Logger.LogCritical($"Elapsed time {watch.ElapsedMilliseconds} ms");
