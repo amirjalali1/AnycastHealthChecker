@@ -39,7 +39,7 @@ namespace AnycastHealthMonitor.HealthChecker
                 stopwatch.Stop();
 
                 isHealthy = response.IsSuccessStatusCode &&
-                    _settings.ExpectedResponseTimeInMilliSecond < stopwatch.ElapsedMilliseconds;
+                    _settings.ExpectedResponseTimeInMilliSecond > stopwatch.ElapsedMilliseconds;
             }
             catch (System.Exception)
             {
