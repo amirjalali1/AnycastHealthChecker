@@ -1,12 +1,10 @@
 ﻿using System.Diagnostics;
 
-namespace AnycastHealthMonitor.LoadMonitors
+namespace AnycastHealthMonitor.SnapshotManagers
 {
-    public class ProcessorLoadMonitor : ILoadMonitor
+    public class ProcessorSnapshotManager : IProcessorSnapshotManager
     {
-        public MonitoredType MonitoredType => MonitoredType.Processor;
-
-        public LoadReport GetLoadReport()
+        public SnapshotResponse Take()
         {
             var output = "";
 
@@ -27,10 +25,10 @@ namespace AnycastHealthMonitor.LoadMonitors
 
             if (float.TryParse(output.Trim(), out var percentageInUsedCpu))
             {
-                return LoadReport.Success(percentageInUsedCpu);
+                return SnapshotResponse.Success(percentageInUsedCpu);
             }
 
-            return LoadReport.Fail("Failed to read info");
+            return SnapshotResponse.Fail("Failed to read info");
         }
     }
 }

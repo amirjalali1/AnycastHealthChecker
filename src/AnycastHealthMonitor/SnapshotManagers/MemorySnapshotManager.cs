@@ -1,12 +1,10 @@
 ﻿using System.Diagnostics;
 
-namespace AnycastHealthMonitor.LoadMonitors
+namespace AnycastHealthMonitor.SnapshotManagers
 {
-    public class MemoryLoadMonitor : ILoadMonitor
+    public class MemorySnapshotManager : IMemorySnapshotManager
     {
-        public MonitoredType MonitoredType => MonitoredType.Memory;
-
-        public LoadReport GetLoadReport()
+        public SnapshotResponse Take()
         {
             var output = "";
 
@@ -27,10 +25,10 @@ namespace AnycastHealthMonitor.LoadMonitors
 
             if (float.TryParse(output.Trim(), out var percentageInUsedMemory))
             {
-                return LoadReport.Success(percentageInUsedMemory);
+                return SnapshotResponse.Success(percentageInUsedMemory);
             }
 
-            return LoadReport.Fail("Failed to read info");
+            return SnapshotResponse.Fail("Failed to read info");
         }
     }
 }

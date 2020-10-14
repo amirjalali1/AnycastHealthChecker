@@ -1,6 +1,6 @@
-﻿namespace AnycastHealthMonitor.LoadMonitors
+﻿namespace AnycastHealthMonitor.SnapshotManagers
 {
-    public class LoadReport
+    public class SnapshotResponse
     {
         public bool Succeeded { get; set; }
 
@@ -10,13 +10,13 @@
 
         public float Percentage { get; set; }
 
-        public static LoadReport Success(float percentage) => new LoadReport() 
+        public static SnapshotResponse Success(float percentage) => new SnapshotResponse() 
         {
             Succeeded = true,
             Percentage = percentage
         };
 
-        public static LoadReport Fail(string message) => new LoadReport()
+        public static SnapshotResponse Fail(string message) => new SnapshotResponse()
         {
             Failed = true,
             FailedMessage = message

@@ -1,6 +1,6 @@
 using System;
 using AnycastHealthMonitor.HealthChecker;
-using AnycastHealthMonitor.LoadMonitors;
+using AnycastHealthMonitor.SnapshotManagers;
 using Farakav.QuartzWorkerService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,18 +45,26 @@ namespace AnycastHealthMonitor
         {
             var configuration = hostBuilderContext.Configuration;
 
-            services.Configure<HealthCheckerSettings>(configuration.GetSection("HealthCheckerSettings"));
+            services.Configure<HealthCheckSettings>(configuration.GetSection("HealthCheckSettings"));
 
-            services.AddTransient<ILoadMonitor, ProcessorLoadMonitor>();
-            services.AddTransient<ILoadMonitor, MemoryLoadMonitor>();
-            services.AddTransient<ILoadMonitor, NetworkLoadMonitor>();
+            services.AddTransient<IProcessorSnapshotManager, ProcessorSnapshotManager>();
+            services.AddTransient<IMemorySnapshotManager, MemorySnapshotManager>();
+            services.AddTransient<INetworkSnapshotManager, NetworkSnapshotManager>();
 
-            services.AddSingleton<IHealthHistoryManager, HealthHistoryManager>();
+            services.AddSingleton<IHealthyStore, HealthyStore>();
 
             services.AddTransient<IHealthChecker, NginxHealthChecker>();
-            services.AddTransient<IHealthChecker, LoadHealthChecker>();
+            services.AddTransient<IHealthChecker, NginxRequestHealthChecker>();
+            services.AddTransient<IHealthChecker, NetworkHealthChecker>();
+            services.AddTransient<IHealthChecker, MemoryHealthChecker>();
+            services.AddTransient<IHealthChecker, ProcessorHealthChecker>();
 
-            services.AddTransient<IHealthController, HealthController>();
+            services.AddHttpClient("nginx-api", c =>
+            {
+                c.Timeout = new TimeSpan(0, 0, 5);
+            });
+
+            services.AddTransient<IHealthyAdvertiser, HealthyAdvertiser>();
 
             services.AddJobScheduler(configuration.GetSection("JobSettings"))
                 .AddJob<HealthMonitorJob>()

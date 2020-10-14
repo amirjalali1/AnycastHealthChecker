@@ -1,10 +1,37 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.Extensions.Options;
+using System.Diagnostics;
+using System.Linq;
 
 namespace AnycastHealthMonitor.HealthChecker
 {
     public class NginxHealthChecker : IHealthChecker
     {
+        private readonly IHealthyStore _healthyStore;
+        private readonly NginxSettings _nginxSettings;
+
+        public NginxHealthChecker(IHealthyStore healthyStore, 
+            IOptions<HealthCheckSettings> healthCheckSettingsOptionsAccessor)
+        {
+            _healthyStore = healthyStore;
+            _nginxSettings = healthCheckSettingsOptionsAccessor.Value.Nginx;
+        }
+
         public bool IsHealthy()
+        {
+            var isHealthy = IsActiveNginx();
+
+            const string key = "nginx";
+
+            _healthyStore.AddHealthyStatus(key, isHealthy);
+
+            var isUnhealty = _healthyStore.Collection(key)
+                .Take(_nginxSettings.HealthyCount)
+                .Any(e => e == false);
+
+            return isUnhealty;
+        }
+
+        private bool IsActiveNginx()
         {
             var info = new ProcessStartInfo
             {
@@ -14,9 +41,7 @@ namespace AnycastHealthMonitor.HealthChecker
                 UseShellExecute = false,
                 CreateNoWindow = true,
             };
-
-            using var process = Process.Start(info);
-
+            var process = Process.Start(info);
             var output = process.StandardOutput.ReadToEnd();
 
             process.WaitForExit();
