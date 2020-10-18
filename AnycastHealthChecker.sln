@@ -11,6 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuartzWorkerService", "src\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3D478AE3-198B-445A-A3B8-3815E91AFCE9}"
 	ProjectSection(SolutionItems) = preProject
+		anycast-receivers-example1.png = anycast-receivers-example1.png
+		anycast-receivers-example2.png = anycast-receivers-example2.png
+		anycast-receivers-example3.png = anycast-receivers-example3.png
+		bird_daemon_filter_explained.png = bird_daemon_filter_explained.png
+		bird_daemon_rib_explained.png = bird_daemon_rib_explained.png
 		README.md = README.md
 	EndProjectSection
 EndProject
