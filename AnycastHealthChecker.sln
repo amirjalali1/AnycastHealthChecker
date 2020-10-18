@@ -9,6 +9,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnycastHealthMonitor", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuartzWorkerService", "src\QuartzWorkerService\QuartzWorkerService.csproj", "{3F5E258C-7F9B-43FC-9FD4-8D6993E75A0C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3D478AE3-198B-445A-A3B8-3815E91AFCE9}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\Amir\Desktop\a\anycast-receivers-example1.png = C:\Users\Amir\Desktop\a\anycast-receivers-example1.png
+		C:\Users\Amir\Desktop\a\anycast-receivers-example2.png = C:\Users\Amir\Desktop\a\anycast-receivers-example2.png
+		C:\Users\Amir\Desktop\a\anycast-receivers-example3.png = C:\Users\Amir\Desktop\a\anycast-receivers-example3.png
+		C:\Users\Amir\Desktop\a\bird_daemon_filter_explained.png = C:\Users\Amir\Desktop\a\bird_daemon_filter_explained.png
+		C:\Users\Amir\Desktop\a\bird_daemon_rib_explained.png = C:\Users\Amir\Desktop\a\bird_daemon_rib_explained.png
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
