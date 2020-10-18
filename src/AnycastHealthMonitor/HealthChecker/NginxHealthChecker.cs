@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using AnycastHealthMonitor.Settings;
+using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Linq;
 
@@ -18,17 +19,17 @@ namespace AnycastHealthMonitor.HealthChecker
 
         public bool IsHealthy()
         {
-            var isHealthy = IsActiveNginx();
+            var nginxIsActive = IsActiveNginx();
 
             const string key = "nginx";
 
-            _healthyStore.AddHealthyStatus(key, isHealthy);
+            _healthyStore.AddHealthyStatus(key, nginxIsActive);
 
             var isUnhealty = _healthyStore.Collection(key)
                 .Take(_nginxSettings.HealthyCount)
                 .Any(e => e == false);
 
-            return isUnhealty;
+            return !isUnhealty;
         }
 
         private bool IsActiveNginx()

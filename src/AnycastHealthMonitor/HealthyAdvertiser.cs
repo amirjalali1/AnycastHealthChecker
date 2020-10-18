@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using AnycastHealthMonitor.HealthChecker;
+using AnycastHealthMonitor.Settings;
 using Microsoft.Extensions.Options;
 
 namespace AnycastHealthMonitor
@@ -22,7 +23,7 @@ namespace AnycastHealthMonitor
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("define ACAST_PS_ADVERTISE =");
             sb.AppendLine("    [");
-            sb.AppendLine($"        {_advertiseSettings.Ip}");
+            sb.AppendLine($"        {_advertiseSettings.HealthyIp}");
             sb.AppendLine("    ];");
 
             writer.Write(sb.ToString());
@@ -35,6 +36,7 @@ namespace AnycastHealthMonitor
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("define ACAST_PS_ADVERTISE =");
             sb.AppendLine("    [");
+            sb.AppendLine($"        {_advertiseSettings.UnhealthyIp}");
             sb.AppendLine("    ];");
 
             writer.Write(sb.ToString());

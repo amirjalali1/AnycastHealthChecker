@@ -21,7 +21,7 @@ namespace AnycastHealthMonitor
 
             queue.Enqueue(isHealthy);
 
-            if (queue.Count > 10)
+            if (queue.Count > 100)
             {
                 queue.Dequeue();
             }

@@ -1,5 +1,6 @@
 using System;
 using AnycastHealthMonitor.HealthChecker;
+using AnycastHealthMonitor.Settings;
 using AnycastHealthMonitor.SnapshotManagers;
 using Farakav.QuartzWorkerService;
 using Microsoft.Extensions.Configuration;
@@ -61,7 +62,7 @@ namespace AnycastHealthMonitor
 
             services.AddHttpClient("nginx-api", c =>
             {
-                c.Timeout = new TimeSpan(0, 0, 5);
+                c.Timeout = new TimeSpan(0, 0, 3);
             });
 
             services.AddTransient<IHealthyAdvertiser, HealthyAdvertiser>();

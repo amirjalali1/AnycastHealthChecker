@@ -1,4 +1,5 @@
-﻿using AnycastHealthMonitor.SnapshotManagers;
+﻿using AnycastHealthMonitor.Settings;
+using AnycastHealthMonitor.SnapshotManagers;
 using Microsoft.Extensions.Options;
 using System.Linq;
 
@@ -21,17 +22,15 @@ namespace AnycastHealthMonitor.HealthChecker
 
         public bool IsHealthy()
         {
-            var interfaceCapacity = (int)_networkSettings.InterfaceCapacity * 1000000;
-
-            var snapshot = _snapshotManager.Take(_networkSettings.InterfaceName, interfaceCapacity);
+            var snapshot = _snapshotManager.Take(_networkSettings.InterfaceName);
 
             const string key = "network";
 
             if (snapshot.Succeeded)
             {
-                var isHealthy = _networkSettings.Percentage > snapshot.Percentage;
+                var snapshotIsHealthy = _networkSettings.Percentage > snapshot.Percentage;
 
-                _healthyStore.AddHealthyStatus(key, isHealthy);
+                _healthyStore.AddHealthyStatus(key, snapshotIsHealthy);
             }
 
             var isUnhealty = _healthyStore.Collection(key)

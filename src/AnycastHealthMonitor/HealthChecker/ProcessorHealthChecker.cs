@@ -1,4 +1,5 @@
-﻿using AnycastHealthMonitor.SnapshotManagers;
+﻿using AnycastHealthMonitor.Settings;
+using AnycastHealthMonitor.SnapshotManagers;
 using Microsoft.Extensions.Options;
 using System.Linq;
 
@@ -27,9 +28,9 @@ namespace AnycastHealthMonitor.HealthChecker
 
             if (snapshot.Succeeded)
             {
-                var isHealthy = _processorSettings.Percentage > snapshot.Percentage;
+                var snapshotIsHealthy = _processorSettings.Percentage > snapshot.Percentage;
 
-                _healthyStore.AddHealthyStatus(key, isHealthy);
+                _healthyStore.AddHealthyStatus(key, snapshotIsHealthy);
             }
 
             var isUnhealty = _healthyStore.Collection(key)

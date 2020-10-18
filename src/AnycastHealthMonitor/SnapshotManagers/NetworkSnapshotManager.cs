@@ -7,18 +7,14 @@ namespace AnycastHealthMonitor.SnapshotManagers
 {
     public class NetworkSnapshotManager : INetworkSnapshotManager
     {
-        private readonly ILogger<NetworkSnapshotManager> _logger;
-
-        public NetworkSnapshotManager(ILogger<NetworkSnapshotManager> logger)
-        {
-            _logger = logger;
-        }
-
-        public SnapshotResponse Take(string interfaceName, float interfaceCapacity)
+        public SnapshotResponse Take(string interfaceName)
         {
             var output = "";
 
-            var arguments = $"-c \"ifstat -b -i {interfaceName}\"";
+            var arguments = string.Format("awk '{{if (NR==1){{r1=$1;}} else if (NR==2){{r2=$1;}} else {{print (((r2-r1)*8/1024/1024)*100/$1);}}}}' " +
+                "<(cat /proc/net/dev|grep {0} | awk '{{print($2 +$10)}}') " +
+                "<(sleep 1;cat /proc/net/dev|grep {0} | awk '{{print($2 +$10)}}') " +
+                "<(cat /sys/class/net/{0}/speed | awk '{{print $1}}')", interfaceName);
 
             var info = new ProcessStartInfo
             {
@@ -31,24 +27,12 @@ namespace AnycastHealthMonitor.SnapshotManagers
 
             using (var process = Process.Start(info))
             {
-                for (int i = 0; i < 3; i++)
-                {
-                    output = process.StandardOutput.ReadLine();
-                }
-
-                process.Kill();
+                output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
             }
 
-            var list = output.Split(" ")
-                .Where(e => !string.IsNullOrWhiteSpace(e))
-                .ToArray();
-
-            if (float.TryParse(list[0], out float inTraffic) && float.TryParse(list[1], out float outTraffic))
+            if (float.TryParse(output.Trim(), out var percentage))
             {
-                var percentage = ((inTraffic + outTraffic) / (float)interfaceCapacity) * 100;
-
-                //_logger.LogInformation($"In: {inTraffic}, Out: {outTraffic}, Capacity: {interfaceCapacity}, Percentage: {percentage}");
-
                 return SnapshotResponse.Success(percentage);
             }
 

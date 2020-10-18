@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using AnycastHealthMonitor.Settings;
+using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
@@ -26,7 +27,7 @@ namespace AnycastHealthMonitor.HealthChecker
 
             const string key = "nginx-request";
 
-            bool isHealthy = false;
+            bool requestIsHealthy = false;
 
             try
             {
@@ -38,15 +39,15 @@ namespace AnycastHealthMonitor.HealthChecker
 
                 stopwatch.Stop();
 
-                isHealthy = response.IsSuccessStatusCode &&
+                requestIsHealthy = response.IsSuccessStatusCode &&
                     _settings.ExpectedResponseTimeInMilliSecond > stopwatch.ElapsedMilliseconds;
             }
             catch (System.Exception)
             {
-                isHealthy = false;
+                requestIsHealthy = false;
             }
 
-            _healthyStore.AddHealthyStatus(key, isHealthy);
+            _healthyStore.AddHealthyStatus(key, requestIsHealthy);
 
             var isUnhealty = _healthyStore.Collection(key)
                     .Take(_settings.UnhealthyCount)
