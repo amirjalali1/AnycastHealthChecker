@@ -240,6 +240,6 @@ The main idea of this Software and how it interacts with bird daemon is from [an
 Contacts
 --------
 
-**Project website**: https://github.com/unixsurfer/anycast_healthchecker
+**Project website**: https://github.com/amirjalali1/AnycastHealthChecker
 
 Amir Jalali <amir.jalali@gmail.com>
