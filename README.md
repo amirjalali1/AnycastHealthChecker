@@ -2,7 +2,7 @@ AnyCast HealthCheker
 =====================
 
     A .Net Core HealthChecker for Anycasted Services
->The main idea of this Software is from [anycast_healthchecker](https://github.com/unixsurfer/anycast_healthchecker) but it is not a port of [Pavlos Parissis](https://github.com/unixsurfer) anycast_healthcheker
+>The main idea of this Software and how it interacts with bird daemon is from [anycast_healthchecker](https://github.com/unixsurfer/anycast_healthchecker) but it is not a port of [Pavlos Parissis](https://github.com/unixsurfer) anycast_healthcheker
  
 
 #### Contents
@@ -10,7 +10,6 @@ AnyCast HealthCheker
 + [What is Anycast](#What-is-Anycast)
 + [How anycast-healthchecker works](#How-anycast-healthchecker-works)
 + [Configuring anycast-healthchecker](#Configuring-anycast-healthchecker)
-
   + [Bird configuration](#Bird-configuration)
 
 
@@ -22,9 +21,11 @@ Introduction
 
 **AnyCast HealthCheker** monitors a service by doing periodic health checks and, based on the result, instructing [Bird](https://bird.network.cz/) daemon to either advertise or withdraw the route to reach it. As a result Bird will only advertise routes for healthy services. Routes for both IPv4 and IPv6 addresses are supported.
 
+This is the pre-release version of AnyCast HealthChecker and naming convetions are subject to change in the future.
+
 You can easily extend the AnyCast HealthCheck by adding a monitor.
 
-Monitors are configurable through a json file aoosettings.json .
+Monitors are configurable through a json file aoosettings.json and easy to develope by extending ISnapshotManager .
 
 There are currently five monitors, Network Bandwitch monitor, Cpu usage monitor,Memory  usage monitor,Nginx availabilty monitor,Nginx responsiveness monitor
 
