@@ -11,6 +11,10 @@ AnyCast HealthCheker
 + [How anycast-healthchecker works](#How-anycast-healthchecker-works)
 + [Configuring anycast-healthchecker](#Configuring-anycast-healthchecker)
   + [Bird configuration](#Bird-configuration)
++ [Contributors](#Contributors)
++ [Acknowledgement](#Acknowledgement)
++ [Contacts](#Contacts)
+
 
 
 
@@ -217,3 +221,25 @@ a link for each file must be created under ``/etc/bird.d`` directory. Administra
     % ls -ls /etc/bird.d/6/anycast-prefixes.conf
     4 lrwxrwxrwx 1 root root 107 Jan 10 10:33 /etc/bird.d/6/anycast-prefixes.conf
     -> /var/lib/anycast-healthchecker/6/anycast-prefixes.conf
+
+Contributors
+---------------
+
+The following people have contributed to project with feedback, commits and code reviews
+
+- Amir Jalali ([@amirjalali1](https://github.com/amirjalali1))
+- Mohammad Akbari ([@MohammadAkbari](https://github.com/MohammadAkbari))
+
+
+
+Acknowledgement
+---------------
+
+The main idea of this Software and how it interacts with bird daemon is from [anycast_healthchecker](https://github.com/unixsurfer/anycast_healthchecker) but it is not a port of [Pavlos Parissis](https://github.com/unixsurfer) anycast_healthcheker
+
+Contacts
+--------
+
+**Project website**: https://github.com/unixsurfer/anycast_healthchecker
+
+Amir Jalali <amir.jalali@gmail.com>
