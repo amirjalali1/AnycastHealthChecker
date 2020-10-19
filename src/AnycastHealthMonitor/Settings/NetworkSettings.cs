@@ -1,0 +1,9 @@
+﻿namespace AnycastHealthMonitor.Settings
+{
+    public class NetworkSettings
+    {
+        public string InterfaceName { get; set; }
+        public float Percentage { get; set; } = 90;
+        public int UnhealthyCount { get; set; } = 10;
+    }
+}
