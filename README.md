@@ -2,7 +2,7 @@ AnyCast HealthCheker
 =====================
 
     A .Net Core HealthChecker for Anycasted Services
->The main idea of this service is from [anycast_healthchecker](https://github.com/unixsurfer/anycast_healthchecker) but it is not a port of anycast_healthcheker
+>The main idea of this Software is from [anycast_healthchecker](https://github.com/unixsurfer/anycast_healthchecker) but it is not a port of [Pavlos Parissis](https://github.com/unixsurfer) anycast_healthcheker
  
 
 #### Contents
@@ -20,7 +20,7 @@ AnyCast HealthCheker
 Introduction
 -------------
 
-**anycast-healthchecker** monitors a service by doing periodic health checks and, based on the result, instructing `Bird`_ daemon to either advertise or withdraw the route to reach it. As a result Bird will only advertise routes for healthy services. Routes for both IPv4 and IPv6 addresses are supported.
+**AnyCast HealthCheker** monitors a service by doing periodic health checks and, based on the result, instructing [Bird](https://bird.network.cz/) daemon to either advertise or withdraw the route to reach it. As a result Bird will only advertise routes for healthy services. Routes for both IPv4 and IPv6 addresses are supported.
 
 Bird must be configured in a certain way to interface properly with anycast-healthchecker. The configuration is detailed later in this document.
 
@@ -33,7 +33,7 @@ Anycast is a network addressing scheme where traffic from a sender has more than
 Routing protocols decide which one of the potential receivers will actually receive traffic, according to the topology of the network. The main attribute contributing to this decision is the cost of the network path between a sender and a receiver.
 
 Cost is a protocol specific value (usually an integer) that has meaning only within the domain of the protocol itself, and it is used as a metric of distance.
-Routing protocols provide default values for common topologies ([BGP](https://en.wikipedia.org/wiki/Border_Gateway_Protocol) associates the cost of a path with the number of autonomous systems between the sender and the receiver, `OSPF`_ calculates the default cost based on the bandwidth of links), but its main use is to allow administrative control over traffic flow by specifying a cost according to business needs.
+Routing protocols provide default values for common topologies ([BGP](https://en.wikipedia.org/wiki/Border_Gateway_Protocol) associates the cost of a path with the number of autonomous systems between the sender and the receiver, [[OSPF](https://en.wikipedia.org/wiki/Open_Shortest_Path_First) calculates the default cost based on the bandwidth of links), but its main use is to allow administrative control over traffic flow by specifying a cost according to business needs.
 
 The closest receiver to a sender always receives the traffic; this changes only if something changes on the network, i.e. another receiver with a better path to the sender shows up or the current receiver disappears. If multiple receivers share the same distance from the sender, more than one might receive traffic, depending on how the routing protocol is configured.
 
@@ -44,7 +44,7 @@ The three pictures below show how traffic is routed between a sender and multipl
 ![alt text](https://github.com/amirjalali1/AnycastHealthChecker/raw/health-monitor/anycast-receivers-example3.png "anycast-receivers-example3.png")
 
 
-These potential receivers use `BGP`_ or `OSPF`_ and simultaneously announce the same destination IP address from different places on the network. Due to the nature of Anycast, receivers can be located on any location across a global
+These potential receivers use [BGP](https://en.wikipedia.org/wiki/Border_Gateway_Protocol) or [OSPF](https://en.wikipedia.org/wiki/Open_Shortest_Path_First) and simultaneously announce the same destination IP address from different places on the network. Due to the nature of Anycast, receivers can be located on any location across a global
 network infrastructure.
 
 Anycast doesn't balance traffic, as only one receiver attracts traffic from senders. For instance, if there are two receivers announcing the same destination IP address in different locations, traffic will be distributed between these two receivers unevenly, as senders can be spread across the network in an uneven way.
@@ -58,7 +58,7 @@ control on.
 
 * the switch happens within few milliseconds
 
-The same technology can be used for balancing traffic using `Equal-Cost Multi-Path`_.
+The same technology can be used for balancing traffic using [Equal-cost multi-path routing](https://en.wikipedia.org/wiki/Equal-cost_multi-path_routing).
 
 ECMP routing is a network technology where traffic can be routed over multiple paths. In the context of routing protocols, path is the route a packet has to take in order to be delivered to a destination. Because these multiple paths share the same cost, traffic is balanced across them.
 
@@ -75,14 +75,14 @@ same time.
 The main characteristic of this type of load-balancing is that it is stateless. Router balances traffic to a destination IP address based on the quadruple network flow without the need to understand and inspect protocols above Layer3.
 As a result, it is very cheap in terms of resources and very fast at the same time. This is commonly advertised as traffic balancing at "wire-speed".
 
-**anycast-healthchecker** can be utilized in Anycast and ECMP environments.
+**AnyCast HealthCheker** can be utilized in Anycast and ECMP environments.
 
 How anycast-healthchecker works
 -------------------------------
 
 The current release of anycast-healthchecker supports only the Bird daemon, which has to be configured in a specific way. Therefore, it is useful to explain very briefly how Bird handles advertisements for routes.
 
-Bird maintains a routing information base (`RIB`_) and various protocols import/export routes to/from it. The diagram below illustrates how Bird advertises IP routes, assigned on the loopback interface, to the rest of the network using BGP protocol. Bird can also import routes learned via BGP/OSPF protocols, but this part of the routing process is irrelevant to the functionality of anycast-healthchecker.
+Bird maintains a routing information base [RIB](https://en.wikipedia.org/wiki/Routing_table) and various protocols import/export routes to/from it. The diagram below illustrates how Bird advertises IP routes, assigned on the loopback interface, to the rest of the network using BGP protocol. Bird can also import routes learned via BGP/OSPF protocols, but this part of the routing process is irrelevant to the functionality of anycast-healthchecker.
 
 ![alt text](https://github.com/amirjalali1/AnycastHealthChecker/raw/health-monitor/bird_daemon_rib_explained.png "bird_daemon_rib_explained.png")
 
@@ -91,14 +91,14 @@ A route is always associated with a service that runs locally on the box. The An
 As shown in the above picture, a route is advertised only when:
 
 #. The IP is assigned to the loopback interface.
-#. `direct`_ protocol from Bird imports a route for that IP in the RIB.
+#. [direct](https://bird.network.cz/?get_doc&f=bird-6.html#ss6.4) protocol from Bird imports a route for that IP in the RIB.
 #. BGP/OSPF protocols export that route from the RIB to a network peer.
 
 The route associated with the Anycasted service must be either advertised or withdrawn based on the health of the service, otherwise traffic will always be routed to the local node regardless of the status of the service.
 
-Bird provides `filtering`_ capabilities with the help of a simple programming language. A filter can be used to either accept or reject routes before they are exported from the RIB to the network.
+Bird provides [filtering](https://bird.network.cz/?get_doc&f=bird-5.html) capabilities with the help of a simple programming language. A filter can be used to either accept or reject routes before they are exported from the RIB to the network.
 
-A list of IP prefixes (<IP>/<prefix length>) is stored in a text file. IP prefixes that **are not** included in the list are filtered-out and **are not** exported from the RIB to the network. The white-list text file is sourced by Bird upon startup, reload and reconfiguration. The following diagram illustrates how this technique works:
+A list of IP prefixes (\<IP>/\<prefix length>)  is stored in a text file. IP prefixes that **are not** included in the list are filtered-out and **are not** exported from the RIB to the network. The white-list text file is sourced by Bird upon startup, reload and reconfiguration. The following diagram illustrates how this technique works:
 
 ![alt text](https://github.com/amirjalali1/AnycastHealthChecker/raw/health-monitor/bird_daemon_filter_explained.png "bird_daemon_filter_explained.png")
 
