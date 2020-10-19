@@ -1,4 +1,4 @@
-AnyCast HealthCheker
+AnyCast HealthChecker
 =====================
 
     A .Net Core HealthChecker for Anycasted Services
