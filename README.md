@@ -22,6 +22,12 @@ Introduction
 
 **AnyCast HealthCheker** monitors a service by doing periodic health checks and, based on the result, instructing [Bird](https://bird.network.cz/) daemon to either advertise or withdraw the route to reach it. As a result Bird will only advertise routes for healthy services. Routes for both IPv4 and IPv6 addresses are supported.
 
+You can easily extend the AnyCast HealthCheck by adding a monitor.
+
+Monitors are configurable through a json file aoosettings.json .
+
+There are currently five monitors, Network Bandwitch monitor, Cpu usage monitor,Memory  usage monitor,Nginx availabilty monitor,Nginx responsiveness monitor
+
 Bird must be configured in a certain way to interface properly with anycast-healthchecker. The configuration is detailed later in this document.
 
 AnyCastHealthCheker is a .Net Core program, which runs in background.
