@@ -1,7 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
-using AnycastHealthMonitor.HealthChecker;
 using AnycastHealthMonitor.Settings;
 using Microsoft.Extensions.Options;
 

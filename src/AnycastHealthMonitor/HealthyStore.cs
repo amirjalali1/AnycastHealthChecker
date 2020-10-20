@@ -21,7 +21,7 @@ namespace AnycastHealthMonitor
 
             queue.Enqueue(isHealthy);
 
-            if (queue.Count > 100)
+            if (queue.Count > 20)
             {
                 queue.Dequeue();
             }
@@ -35,9 +35,11 @@ namespace AnycastHealthMonitor
         {
             var collection = GetQueue(key);
 
-            collection.Reverse();
+            var list = collection.ToList();
 
-            return collection;
+            list.Reverse();
+
+            return list;
         }
 
         private Queue<bool> GetQueue(string key)
