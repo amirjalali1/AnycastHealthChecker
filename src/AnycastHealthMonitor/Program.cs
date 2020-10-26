@@ -48,11 +48,12 @@ namespace AnycastHealthMonitor
 
             services.Configure<HealthCheckSettings>(configuration.GetSection("HealthCheckSettings"));
 
+            services.AddSingleton<IHealthyStore, HealthyStore>();
+            services.AddSingleton<IHealthyAdvertiser, HealthyAdvertiser>();
+
             services.AddTransient<IProcessorSnapshotManager, ProcessorSnapshotManager>();
             services.AddTransient<IMemorySnapshotManager, MemorySnapshotManager>();
             services.AddTransient<INetworkSnapshotManager, NetworkSnapshotManager>();
-
-            services.AddSingleton<IHealthyStore, HealthyStore>();
 
             services.AddTransient<IHealthChecker, NginxHealthChecker>();
             services.AddTransient<IHealthChecker, NginxRequestHealthChecker>();
@@ -65,7 +66,6 @@ namespace AnycastHealthMonitor
                 c.Timeout = new TimeSpan(0, 0, 3);
             });
 
-            services.AddTransient<IHealthyAdvertiser, HealthyAdvertiser>();
 
             services.AddJobScheduler(configuration.GetSection("JobSettings"))
                 .AddJob<HealthMonitorJob>()
