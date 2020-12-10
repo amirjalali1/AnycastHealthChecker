@@ -22,7 +22,7 @@ namespace AnycastHealthMonitor
             {
                 Log.Information("Configuring web host ...");
 
-                var host = CreateHostBuilder(args).UseWindowsService().Build();
+                var host = CreateHostBuilder(args).UseSystemd().Build();
 
                 Log.Information("Starting web host ...");
                 host.Run();
